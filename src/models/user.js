@@ -1,6 +1,9 @@
 "use strict";
 const { Model } = require("sequelize");
 const checkPassword = require("../utils/checkPassword");
+const bcrypt = require("bcrypt");
+const isValidUuid = require("../utils/isValidUuid");
+const CustomError = require("../utils/CustomError");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -73,6 +76,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           checkPassword,
+          notNull: { args: true, msg: "password is required" },
         },
       },
     },
@@ -89,5 +93,18 @@ module.exports = (sequelize, DataTypes) => {
       ],
     }
   );
+  User.beforeCreate(async (user, _) => {
+    const password = await bcrypt.hash(user.password, 10);
+    user.password = password;
+  });
+
+  User.prototype.comparePassword = async function (params) {
+    try {
+      return await bcrypt.compare(params, this.password);
+    } catch (error) {
+      console.log(error);
+      throw new Error("error comparing password");
+    }
+  };
   return User;
 };
