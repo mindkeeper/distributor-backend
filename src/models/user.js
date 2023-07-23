@@ -2,8 +2,6 @@
 const { Model } = require("sequelize");
 const checkPassword = require("../utils/checkPassword");
 const bcrypt = require("bcrypt");
-const isValidUuid = require("../utils/isValidUuid");
-const CustomError = require("../utils/CustomError");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -11,9 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Role }) {
+    static associate({ Role, Transaction, Token }) {
       // define association here
-      this.belongsTo(Role);
+      this.belongsTo(Role, { as: "role", foreignKey: "role_id" });
+      this.hasMany(Transaction);
+      this.hasOne(Token, { foreignKey: "user_id" });
     }
   }
   User.init(
@@ -77,6 +77,13 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           checkPassword,
           notNull: { args: true, msg: "password is required" },
+        },
+      },
+      resetOtp: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          len: { args: [6, 6], msg: "OTP must be 6 character long" },
         },
       },
     },
