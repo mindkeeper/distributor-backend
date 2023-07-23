@@ -32,6 +32,7 @@ const loginHandler = asyncErrorHandler(async (req, res, next) => {
   const role = user.role;
 
   const payload = {
+    userId: user.id,
     username: user.username,
     email: user.email,
     role: role.dataValues.role_name,
