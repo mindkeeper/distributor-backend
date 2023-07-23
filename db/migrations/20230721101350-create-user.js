@@ -29,6 +29,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      reset_otp: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       role_id: {
         type: Sequelize.UUID,
         allowNull: false,
