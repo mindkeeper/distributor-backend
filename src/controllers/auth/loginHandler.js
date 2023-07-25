@@ -1,8 +1,8 @@
 const asyncErrorHandler = require("../asyncErrorHandler");
-const { User, Role, Token } = require("../../models");
+const { User, Role, Token, sequelize } = require("../../models");
 const { Op } = require("sequelize");
 const CustomError = require("../../utils/CustomError");
-const makeJWT = require("../../utils/makeJWT");
+const { createToken, createRefreshToken } = require("../../utils/jwtHelper");
 
 const loginHandler = asyncErrorHandler(async (req, res, next) => {
   const { emailOrUsername, password } = req.body;
@@ -13,14 +13,9 @@ const loginHandler = asyncErrorHandler(async (req, res, next) => {
     where: {
       [Op.or]: [{ username: emailOrUsername }, { email: emailOrUsername }],
     },
-    attributes: ["id", "username", "email", "password"],
-    include: [
-      {
-        model: Role,
-        as: "role",
-        attributes: ["role_name"],
-      },
-    ],
+    attributes: {
+      exclude: ["deletedAt", "createdAt", "updatedAt", "resetOtp"], // List of attributes to exclude from the result
+    },
   });
 
   if (!user)
@@ -28,19 +23,13 @@ const loginHandler = asyncErrorHandler(async (req, res, next) => {
   const isValidPassword = await user.comparePassword(password);
   if (!isValidPassword)
     return next(new CustomError("username or password is wrong!", 401));
+  delete user.dataValues.password;
 
-  const role = user.role;
-
-  const payload = {
-    userId: user.id,
-    username: user.username,
-    email: user.email,
-    role: role.dataValues.role_name,
-  };
-  const token = makeJWT(payload);
-  await Token.destroy({ where: { user_id: user.id } });
-  await Token.create({ token, user_id: user.id });
-  return res.status(200).json({ msg: "success", data: { token, ...payload } });
+  const token = createToken({ ...user.dataValues });
+  const refreshToken = createRefreshToken({ ...user.dataValues });
+  return res
+    .status(200)
+    .json({ msg: "success", data: { token, refresh_token: refreshToken } });
 });
 
 module.exports = loginHandler;
