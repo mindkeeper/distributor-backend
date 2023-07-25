@@ -7,8 +7,9 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Product }) {
-      this.hasMany(Product);
+    static associate({ Product, Distributor }) {
+      this.hasMany(Product, { foreignKey: "company_id" });
+      this.belongsTo(Distributor, { foreignKey: "distributor_id" });
     }
   }
   Company.init(
@@ -25,10 +26,6 @@ module.exports = (sequelize, DataTypes) => {
       phone: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: {
-          args: true,
-          msg: "phone already taken!",
-        },
         validate: {
           notNull: { msg: "phone number required" },
           is: {

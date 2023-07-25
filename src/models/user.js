@@ -9,12 +9,13 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Role, Transaction, Token }) {
+    static associate({ Distributor, Token }) {
       // define association here
-      this.belongsTo(Role, { as: "role", foreignKey: "role_id" });
-      this.hasMany(Transaction);
+
+      this.hasMany(Distributor);
       this.hasOne(Token, { foreignKey: "user_id" });
     }
+
   }
   User.init(
     {
@@ -113,5 +114,6 @@ module.exports = (sequelize, DataTypes) => {
       throw new Error("error comparing password");
     }
   };
+
   return User;
 };

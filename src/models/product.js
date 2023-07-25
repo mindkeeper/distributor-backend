@@ -7,15 +7,15 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Company, Category, Transaction, TransactionItem }) {
+    static associate({ Company, Transaction, TransactionItem, Distributor }) {
       // define association here
-      this.belongsTo(Company);
-      this.belongsTo(Category);
+      this.belongsTo(Company, { foreignKey: "company_id" });
       this.belongsToMany(Transaction, {
         through: TransactionItem,
         foreignKey: "product_id",
         otherKey: "transaction_id",
       });
+      this.belongsTo(Distributor, { foreignKey: "distributor_id" });
     }
   }
   Product.init(
@@ -30,23 +30,6 @@ module.exports = (sequelize, DataTypes) => {
           },
           notNull: {
             msg: "product title is required",
-          },
-        },
-      },
-      price: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "product price is required",
-          },
-          isInt: {
-            args: true,
-            msg: "must be an integer",
-          },
-          min: {
-            args: 1000,
-            msg: "minimum price for product is 1000",
           },
         },
       },
