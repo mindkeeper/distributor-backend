@@ -1,6 +1,7 @@
 const getUserHandler = require("../controllers/user/getUserHandler");
+const verifyToken = require("../middlewares/authorization/verifyToken");
 
 const routes = require("express").Router();
-routes.get("/:id", getUserHandler);
+routes.get("/", verifyToken, getUserHandler);
 
 module.exports = routes;
