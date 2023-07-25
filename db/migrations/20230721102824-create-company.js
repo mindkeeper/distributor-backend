@@ -20,6 +20,15 @@ module.exports = {
       address: {
         type: Sequelize.STRING,
       },
+      // distributor_id: {
+      //   type: Sequelize.UUID,
+      //   allowNull: false,
+      //   references: {
+      //     model: "distributors",
+      //     key: "id",
+      //   },
+      // },
+
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,

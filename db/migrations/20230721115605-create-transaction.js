@@ -15,6 +15,9 @@ module.exports = {
         defaultValue: "Pending",
         allowNull: false,
       },
+      // type:{
+      //   type:
+      // },
       sender_id: {
         type: Sequelize.UUID,
         allowNull: false,

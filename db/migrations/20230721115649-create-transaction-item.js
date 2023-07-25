@@ -9,8 +9,20 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
+      buy_price: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      sell_price: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       quantity: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      subtotal: {
+        type: Sequelize.BIGINT,
         allowNull: false,
       },
       product_id: {

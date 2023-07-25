@@ -2,50 +2,50 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("buyers", {
+    await queryInterface.createTable("distributors", {
       id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.literal("gen_random_uuid()"),
+        type: Sequelize.INTEGER,
       },
-      buyer_name: {
+      distributor_name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
-      },
-      address: {
-        type: Sequelize.STRING,
-        allowNull: true,
       },
       phone: {
         type: Sequelize.STRING,
-        allowNull: true,
-      },
-      area_id: {
-        type: Sequelize.UUID,
         allowNull: false,
-        references: {
-          model: "areas",
-          key: "id",
-        },
-        onDelete: "SET NULL",
-        onUpdate: "CASCADE",
+      },
+      address: { type: Sequelize.STRING },
+      plan: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        allowNull: true,
+        defaultValue: [],
       },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal("now()"),
       },
-
+      user_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: "users",
+          key: "id",
+        },
+      },
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal("now()"),
+      },
+      deleted_at: {
+        type: Sequelize.DATE,
+        allowNull: true,
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("buyers");
+    await queryInterface.dropTable("distributors");
   },
 };

@@ -16,10 +16,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      price: {
-        type: Sequelize.BIGINT,
-        allowNull: false,
-      },
       in_carton: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -38,14 +34,14 @@ module.exports = {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       },
-      category_id: {
+      distributor_id: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "categories",
+          model: "distributors",
           key: "id",
         },
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
         onUpdate: "CASCADE",
       },
       created_at: {
@@ -61,33 +57,6 @@ module.exports = {
       deleted_at: {
         allowNull: true,
         type: Sequelize.DATE,
-      },
-    });
-
-    await queryInterface.addIndex("products", ["price"], {
-      name: "price_gt_50k",
-      where: {
-        price: {
-          [Op.gt]: 50000,
-        },
-      },
-    });
-
-    await queryInterface.addIndex("products", ["price"], {
-      name: "price_gt_100k",
-      where: {
-        price: {
-          [Op.gt]: 100000,
-        },
-      },
-    });
-
-    await queryInterface.addIndex("products", ["price"], {
-      name: "price_gt_150k",
-      where: {
-        price: {
-          [Op.gt]: 150000,
-        },
       },
     });
   },
