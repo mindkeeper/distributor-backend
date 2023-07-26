@@ -11,6 +11,8 @@
     "dev": "nodemon index.js",
     "migrate-prod:up": "npx sequelize-cli db:migrate --env production",
     "migrate-prod:down": "npx sequelize-cli db:migrate:undo:all --env production",
+    "migrate-test:up": "npx sequelize-cli db:migrate --env testing",
+    "migrate-test:down": "npx sequelize-cli db:migrate:undo:all --env testing",
     "migrate-dev:up": "npx sequelize-cli db:migrate",
     "migrate-dev:down": "npx sequelize-cli db:migrate:undo:all"
   },
