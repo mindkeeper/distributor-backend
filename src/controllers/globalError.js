@@ -6,9 +6,10 @@ module.exports = (error, req, res, next) => {
   error.statusCode = error.statusCode || 500;
   error.status = error.status || "error";
   if (process.env.NODE_ENV === "development") devError(res, error);
-  if (process.env.NODE_ENV === "production") {
-    console.log(error.name);
-
+  if (
+    process.env.NODE_ENV === "production" ||
+    process.env.NODE_ENV === "testing"
+  ) {
     if (error instanceof Sequelize.ValidationError)
       error = validationErrorHandler(error);
     if (error instanceof Sequelize.UniqueConstraintError)
@@ -52,7 +53,7 @@ function invalidIdHandler(err) {
 }
 
 function validationErrorHandler(err) {
-  return new CustomError(err.message, 400);
+  return new CustomError(err.errors[0].message, 400);
 }
 
 function duplicateKeyHandler(err) {
