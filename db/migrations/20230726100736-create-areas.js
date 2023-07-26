@@ -2,16 +2,25 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("categories", {
+    await queryInterface.createTable("areas", {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
-      category_name: {
+      area_name: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
+      },
+      distributor_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: "distributors",
+          key: "id",
+        },
       },
       created_at: {
         allowNull: false,
@@ -26,6 +35,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("categories");
+    await queryInterface.dropTable("areas");
   },
 };

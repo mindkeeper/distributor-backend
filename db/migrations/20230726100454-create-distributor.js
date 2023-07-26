@@ -2,16 +2,26 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("white_list_token", {
+    await queryInterface.createTable("distributors", {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
-      token: {
-        type: Sequelize.TEXT,
+      distributor_name: {
+        type: Sequelize.STRING,
         allowNull: false,
+      },
+      phone: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      address: { type: Sequelize.STRING },
+      plan: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        allowNull: true,
+        defaultValue: [],
       },
       user_id: {
         type: Sequelize.UUID,
@@ -20,7 +30,6 @@ module.exports = {
           model: "users",
           key: "id",
         },
-        onDelete: "CASCADE",
       },
       created_at: {
         allowNull: false,
@@ -30,9 +39,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+      deleted_at: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("white_list_token");
+    await queryInterface.dropTable("distributors");
   },
 };

@@ -15,6 +15,30 @@ module.exports = (sequelize, DataTypes) => {
   }
   TransactionItem.init(
     {
+      buyPrice: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          isInt: { args: true, msg: "item buy price must be an integer" },
+          notNull: { args: true, msg: "item buy price is required" },
+        },
+      },
+      sellPrice: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          isInt: { args: true, msg: "item sell price must be an integer" },
+          notNull: { args: true, msg: "item sell price is required" },
+        },
+      },
+      subtotal: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+        validate: {
+          isInt: { args: true, msg: "item subtotal must be an integer" },
+          notNull: { args: true, msg: "item subtotal is required" },
+        },
+      },
       quantity: {
         type: DataTypes.INTEGER,
         allowNull: false,

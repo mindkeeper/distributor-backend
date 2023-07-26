@@ -2,6 +2,7 @@
 const { Model } = require("sequelize");
 const checkPassword = require("../utils/checkPassword");
 const bcrypt = require("bcrypt");
+const CustomError = require("../utils/CustomError");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -9,13 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Distributor, Token }) {
+    static associate({ Distributor, DistributorUser }) {
       // define association here
-
-      this.hasMany(Distributor);
-      this.hasOne(Token, { foreignKey: "user_id" });
+      this.hasMany(DistributorUser, { foreignKey: "user_id" });
+      this.hasMany(Distributor, { foreignKey: "user_id" });
     }
-
   }
   User.init(
     {
@@ -106,14 +105,23 @@ module.exports = (sequelize, DataTypes) => {
     user.password = password;
   });
 
-  User.prototype.comparePassword = async function (params) {
+  User.prototype.comparePassword = async function (password) {
     try {
-      return await bcrypt.compare(params, this.password);
+      return await bcrypt.compare(password, this.password);
     } catch (error) {
       console.log(error);
       throw new Error("error comparing password");
     }
   };
-
+  User.prototype.updatePassword = async function (password) {
+    try {
+      checkPassword(password);
+      const hashedPassword = await bcrypt.hash(password, 10);
+      this.password = hashedPassword;
+      await this.save({ fields: ["password"] });
+    } catch (error) {
+      throw new CustomError(error.message, 400);
+    }
+  };
   return User;
 };

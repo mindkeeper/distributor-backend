@@ -1,66 +1,62 @@
 "use strict";
-
-const { Op } = require("sequelize");
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("products", {
+    await queryInterface.createTable("transactionItems", {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
-      title: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      in_carton: {
+      buy_price: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      stock: {
+      sell_price: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      company_id: {
-        type: Sequelize.UUID,
+      quantity: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        references: {
-          model: "companies",
-          key: "id",
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
       },
-      distributor_id: {
-        type: Sequelize.UUID,
+      subtotal: {
+        type: Sequelize.BIGINT,
         allowNull: false,
+      },
+      product_id: {
+        allowNull: false,
+        type: Sequelize.UUID,
         references: {
-          model: "distributors",
+          model: "products",
           key: "id",
         },
-        onDelete: "CASCADE",
         onUpdate: "CASCADE",
+        onDelete: "NO ACTION",
+      },
+      transaction_id: {
+        allowNull: false,
+        type: Sequelize.UUID,
+        references: {
+          model: "transactions",
+          key: "id",
+        },
       },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("now()"),
       },
+
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("now()"),
       },
-      deleted_at: {
-        allowNull: true,
-        type: Sequelize.DATE,
-      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("products");
+    await queryInterface.dropTable("transactionItems");
   },
 };

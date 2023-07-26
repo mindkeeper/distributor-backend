@@ -2,38 +2,53 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("companies", {
+    await queryInterface.createTable("buyers", {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
-      company_name: {
+      buyer_name: {
         type: Sequelize.STRING,
         allowNull: false,
-      },
-      phone: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        unique: true,
       },
       address: {
         type: Sequelize.STRING,
+        allowNull: true,
       },
-      // distributor_id: {
-      //   type: Sequelize.UUID,
-      //   allowNull: false,
-      //   references: {
-      //     model: "distributors",
-      //     key: "id",
-      //   },
-      // },
+      phone: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      area_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: "areas",
+          key: "id",
+        },
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
+      },
+      distributor_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: "distributors",
+          key: "id",
+        },
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
+      },
 
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("now()"),
       },
+
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -42,6 +57,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("companies");
+    await queryInterface.dropTable("buyers");
   },
 };
