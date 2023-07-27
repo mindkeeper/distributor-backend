@@ -4,7 +4,6 @@ const asyncErrorHandler = require("../asyncErrorHandler");
 
 const getUserHandler = asyncErrorHandler(async (req, res, next) => {
   const userId = req.userPayload.id;
-  // console.log(userId, req.userPayload);
   const user = await User.findByPk(userId, {
     attributes: {
       exclude: ["deletedAt", "createdAt", "updatedAt", "resetOtp", "password"], // List of attributes to exclude from the result
