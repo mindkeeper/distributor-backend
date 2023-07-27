@@ -9,11 +9,12 @@ const getDistributorDetail = asyncErrorHandler(async (req, res, next) => {
       exclude: ["createdAt", "updatedAt", "deletedAt", "plan", "user_id"],
     },
   });
+  if (!distributor)
+    return next(new CustomError("distributor tidak ditemukan", 404));
   const employees = await distributor.getEmployees({
     attributes: ["id", "name", "role", "user_id"],
   });
-  if (!distributor)
-    return next(new CustomError("distributor tidak ditemukan", 404));
+
   return res
     .status(200)
     .json({ msg: "success", data: { distributor, employees } });
