@@ -15,4 +15,11 @@ module.exports = {
     });
     return token;
   },
+  createDistributorToken(payload) {
+    const { DIST_SECRET, DIST_ISSUER } = process.env;
+    const token = jwt.sign(payload, DIST_SECRET, {
+      issuer: DIST_ISSUER,
+    });
+    return token;
+  },
 };
