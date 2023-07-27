@@ -10,7 +10,6 @@ const createTokenHandler = asyncErrorHandler(async (req, res, next) => {
     where: { user_id: userId, distributor_id: distributorId },
     attributes: ["id", "name", "user_id", "distributor_id", "role"],
   });
-  console.log(payload);
   if (!payload) return next(new CustomError("Data tidak ditemukan", 404));
   const token = createDistributorToken(payload.toJSON());
   return res.status(201).json({ msg: "success", data: { token } });
