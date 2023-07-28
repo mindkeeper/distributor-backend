@@ -6,6 +6,7 @@ const verifyDistributorToken = require("../middlewares/authorization/verifyDistr
 const addEmployeesHandler = require("../controllers/distributors/addEmployees");
 const removeEmployeesHandler = require("../controllers/distributors/removeEmployees");
 const editEmployeeHandler = require("../controllers/distributors/editEmployee");
+const getEmployeesHandler = require("../controllers/distributors/getEmployees");
 const routes = require("express").Router();
 
 routes.post("/new", verifyToken, createDistributorHandler);
@@ -22,5 +23,6 @@ routes.patch(
   verifyDistributorToken,
   editEmployeeHandler
 );
+routes.get("/employees", verifyDistributorToken, getEmployeesHandler);
 
 module.exports = routes;
