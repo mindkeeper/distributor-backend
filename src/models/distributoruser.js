@@ -27,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         validate: {
           len: { args: [3], msg: "nama user terlalu pendek" },
-          isAlpha: { args: true, msg: "format nama user salah" },
         },
       },
     },
