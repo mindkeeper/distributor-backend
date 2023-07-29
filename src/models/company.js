@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate({ Product, Distributor }) {
-      this.hasMany(Product, { foreignKey: "company_id" });
+      this.hasMany(Product, { foreignKey: "company_id", as: "products" });
       this.belongsTo(Distributor, { foreignKey: "distributor_id" });
     }
   }
@@ -43,7 +43,15 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Company",
       tableName: "companies",
       underscored: true,
+      hooks: {
+        afterCreate: (record) => {
+          delete record.dataValues.distributor_id;
+          delete record.dataValues.createdAt;
+          delete record.dataValues.updatedAt;
+        },
+      },
     }
   );
+
   return Company;
 };
