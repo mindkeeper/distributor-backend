@@ -41,10 +41,11 @@ function prodError(res, error) {
   if (error.isOperational)
     return res
       .status(error.statusCode)
-      .json({ status: error.status, message: error.message });
+      .json({ status: error.status, message: error.message, data: {} });
   return res.status(500).json({
     status: "Internal Server Error",
     message: "Something went wrong, please try again later!",
+    data: {},
   });
 }
 
