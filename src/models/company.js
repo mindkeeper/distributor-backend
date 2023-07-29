@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Company.init(
     {
-      companyName: {
+      company_name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {

@@ -4,7 +4,7 @@ const { Company } = require("../../models");
 const createCompanyHandler = asyncErrorHandler(async (req, res, next) => {
   const { role, distributor_id: distributorId } = req.distributorPayload;
 
-  const { company_name: companyName, phone, address } = req.body;
+  const { company_name, phone, address } = req.body;
   if (role !== "Admin" && role !== "Owner")
     return next(
       new CustomError(
@@ -14,7 +14,7 @@ const createCompanyHandler = asyncErrorHandler(async (req, res, next) => {
     );
 
   const company = await Company.create({
-    companyName,
+    company_name,
     phone,
     address,
     distributor_id: distributorId,
