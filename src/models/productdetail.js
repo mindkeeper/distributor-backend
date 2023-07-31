@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   ProductDetail.init(
     {
-      price: {
+      buy_price: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
