@@ -5,7 +5,7 @@ const CustomError = require("../../utils/CustomError");
 const { createToken, createRefreshToken } = require("../../utils/jwtHelper");
 
 const loginHandler = asyncErrorHandler(async (req, res, next) => {
-  const { emailOrUsername, password } = req.body;
+  const { email_or_username: emailOrUsername, password } = req.body;
   if (!emailOrUsername)
     return next(new CustomError("email or username is required", 400));
   if (!password) return next(new CustomError("password is required", 400));
