@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       status: {
         type: DataTypes.ENUM,
-        values: ["Pending", "Paid", "Cancelled"],
+        values: ["Pending", "Cash", "Credit"],
         defaultValue: "Pending",
         allowNull: false,
       },
@@ -33,6 +33,18 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { args: true, msg: "Tramsaction type is required" },
         },
+      },
+      discount: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        validate: {
+          isInt: { args: true, msg: "discount must be an integer" },
+        },
+      },
+      due: {
+        type: DataTypes.DATE,
+        allowNull: false,
       },
       total: {
         type: DataTypes.BIGINT,
