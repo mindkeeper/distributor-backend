@@ -68,10 +68,6 @@ module.exports = (sequelize, DataTypes) => {
             args: true,
             msg: "product stock must be an integer",
           },
-          min: {
-            args: 0,
-            msg: "minimum of product is 0",
-          },
         },
       },
 
