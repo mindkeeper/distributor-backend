@@ -21,6 +21,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      discount: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
       subtotal: {
         type: Sequelize.BIGINT,
         allowNull: false,
@@ -32,8 +37,6 @@ module.exports = {
           model: "products",
           key: "id",
         },
-        onUpdate: "CASCADE",
-        onDelete: "NO ACTION",
       },
       transaction_id: {
         allowNull: false,

@@ -20,24 +20,37 @@ module.exports = {
         values: ["Sell", "Refund"],
         allowNull: false,
       },
+      discount: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      due: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
       total: {
         type: Sequelize.BIGINT,
       },
       sender_id: {
         type: Sequelize.UUID,
         allowNull: false,
-        onDelete: "NO ACTION",
-        onUpdate: "CASCADE",
         references: {
           model: "distributor_user",
           key: "id",
         },
       },
+      admin_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          key: "id",
+          model: "distributor_user",
+        },
+      },
       buyer_id: {
         type: Sequelize.UUID,
         allowNull: false,
-        onDelete: "NO ACTION",
-        onUpdate: "CASCADE",
         references: {
           model: "buyers",
           key: "id",
@@ -46,8 +59,6 @@ module.exports = {
       distributor_id: {
         type: Sequelize.UUID,
         allowNull: false,
-        onDelete: "NO ACTION",
-        onUpdate: "CASCADE",
         references: {
           model: "distributors",
           key: "id",

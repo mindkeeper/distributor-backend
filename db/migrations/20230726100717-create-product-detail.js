@@ -5,11 +5,11 @@ module.exports = {
     await queryInterface.createTable("product_details", {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
-      price: {
+      buy_price: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
@@ -17,13 +17,23 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      product_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: "products",
+          key: "id",
+        },
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("now()"),
       },
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("now()"),
       },
     });
   },
