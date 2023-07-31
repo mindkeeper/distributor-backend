@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       role: {
         type: DataTypes.ENUM,
-        values: ["Owner", "Admin", "Sales"],
+        values: ["Owner", "Admin", "Sales", "Operational Manager"],
       },
       name: {
         type: DataTypes.STRING,
@@ -35,7 +35,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "DistributorUser",
       tableName: "distributor_user",
       underscored: true,
-      // indexes: [{ fields: "" }],
     }
   );
   return DistributorUser;
