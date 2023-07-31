@@ -31,6 +31,14 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { args: true, msg: "item sell price is required" },
         },
       },
+      discount: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        validate: {
+          isInt: { args: true, msg: "discount must be an integer" },
+        },
+      },
       subtotal: {
         type: DataTypes.BIGINT,
         allowNull: false,
